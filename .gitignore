@@ -4,3 +4,6 @@
 
 # Ignoring Jupyter Notebook cache files
 /notebooks/.ipynb_checkpoints
+
+# Ignoring PyCharm files
+/.idea
