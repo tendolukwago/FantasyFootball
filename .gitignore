@@ -1,0 +1,6 @@
+
+# Ignoring virtualenv files
+/env
+
+# Ignoring Jupyter Notebook cache files
+/notebooks/.ipynb_checkpoints
