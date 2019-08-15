@@ -2,7 +2,7 @@ import requests
 import json
 
 
-class DataPuller(object):
+class SleeperAPI(object):
 
     def __init__(self, league_id='', user_id=''):
         self.league_id = league_id
@@ -208,3 +208,101 @@ class DataPuller(object):
         response = requests.get(url)
         json_ = json.loads(response.content)
         return json_
+    
+    def fetch_players(self):
+        '''
+        @description: Fetches a dictionary of all players info.
+        '''
+        
+        url = 'https://api.sleeper.app/v1/players/nfl'
+        response = requests.get(url)
+        json_ = json.loads(response.content) 
+        return json_
+    
+    
+    def trending_players(self, type = 'add', lookback=12, limit=25, sport='nfl'):
+        '''
+        @description: Fetches all trending players to add/drop in a given hours.
+        '''
+        url = f'https://api.sleeper.app/v1/players/{sport}/trending/{type}?lookback_hours={lookback}&limit={limit}'
+        response = requests.get(url)
+        json_ = json.loads(response.content) 
+        return json_
+    
+    
+    def get_season_stats(self, season_type = 'regular', sport = 'nfl', season=2019):
+        '''
+        @description: Returns the season total stats for each player given a season and year.
+        '''
+        url = f'https://api.sleeper.app/v1/stats/{sport}/{season_type}/{season}'
+        response = requests.get(url)
+        json_ = json.loads(response.content) 
+        return json_
+    
+    def get_week_stats(self, week, season_type = 'regular', sport = 'nfl', season=2019):
+        '''
+        @description: Returns the week total stats for each player given a season, year, and week.
+        '''
+        
+        url = f'https://api.sleeper.app/v1/stats/{sport}/{season_type}/{season}/{week}'
+        response = requests.get(url)
+        json_ = json.loads(response.content) 
+        return json_
+    
+    def get_all_week_stats(self, **kwargs):
+        '''
+        @description: Returns all weekly total stats for each player given a season, year, and week.
+        '''
+        
+        all_weeks = {}
+        for week in range(1, 20):
+            
+            try:
+                week_data = get_week_stats(week, **kwargs)
+                if len(week_data) > 0:
+                    all_weeks[week] = week_data
+                    
+            except:
+                pass
+            
+        return all_weeks
+    
+    
+    def get_season_projections(self, season_type = 'regular', sport = 'nfl', season=2019):
+        '''
+        @description: Returns the season total projections for each player given a season and year.
+        '''
+        url = f'https://api.sleeper.app/v1/projections/{sport}/{season_type}/{season}'
+        response = requests.get(url)
+        
+        json_ = json.loads(response.content) 
+        return json_
+    
+    def get_week_projections(self, week, season_type = 'regular', sport = 'nfl', season=2019):
+        '''
+        @description: Returns the week total projections for each player given a season, year, and week.
+        '''
+        
+        url = f'https://api.sleeper.app/v1/projections/{sport}/{season_type}/{season}/{week}'
+        response = requests.get(url)
+        json_ = json.loads(response.content) 
+        return json_
+    
+    
+    def get_all_week_projections(self, **kwargs):
+        '''
+        @description: Returns all weekly total projections for each player given a season, year, and week.
+        '''
+        
+        all_weeks = {}
+        for week in range(1, 20):
+            
+            try:
+                week_data = get_week_projections(week, **kwargs)
+                if len(week_data) > 0:
+                    all_weeks[week] = week_data
+                    
+            except:
+                pass
+            
+        return all_weeks
